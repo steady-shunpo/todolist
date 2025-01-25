@@ -10,8 +10,14 @@ function App() {
   const [listTodo, setListTodo] = useState([]);
 
 
-  const handleEdit = () => {
-
+  const handleEdit = (e) => {
+    let id = e.target.name;
+    let t = listTodo.filter(i=>i.id == id);
+    setTodo(t[0].todo)
+    let copytodos = listTodo.filter(item=>{
+      return item.id!= id;
+    })
+    setListTodo(copytodos)
   }
   const handleDelete = (e) => {
     let id = e.target.name;
@@ -54,17 +60,20 @@ function App() {
           <div className="time">9:00am</div>
         </div>
         <div className="todos">
+          {listTodo.length ==0 && <div className="text-center mt-4 text-lg" >All tasks completed</div> }
           {listTodo.map(item => {
             return <div key = {item.id} className="todos flex justify-center align-middle mt-5 gap-2">
+
               <input type="checkbox" onChange={handleComplete} value={item.isCompleted} name={item.id} id="" />
 
               <div className="text w-1/3 rounded-lg h-9 bg-slate-900 opacity-60 text-center">
+                
                 <div className={item.isCompleted ? "line-through" : ""}>
                   {item.todo}
                 </div>
               </div>
               <div className="buttons">
-                <button className="edit bg-slate-900 h-9 px-4 rounded-lg">Edit</button>
+                <button onClick={handleEdit} name = {item.id} className="edit bg-slate-900 h-9 px-4 rounded-lg">Edit</button>
                 <button onClick={handleDelete} name = {item.id} className="delete bg-slate-900 h-9 px-4 rounded-lg">Delete</button>
               </div>
             </div>
